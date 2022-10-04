@@ -8,15 +8,15 @@ public class UploadClient {
     public String uploadFile() {
         String listing = "";
         try {
-            Socket socket = new Socket("localhost", 7777);
+            Socket socket = new Socket("localhost", 8080);
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(socket.getInputStream()));
             OutputStream out = socket.getOutputStream();
-            FileInputStream fis = new FileInputStream("AndroidLogo.png");
+            FileInputStream fis = new FileInputStream(System.getProperty("user.dir") + "/ConsoleApp/AndroidLogo.png");
             byte[] bytes = fis.readAllBytes();
             out.write(bytes);
-            DataOutputStream dataOutputStream = new DataOutputStream(out);
-            dataOutputStream.flush();
+//            DataOutputStream dataOutputStream = new DataOutputStream(out);
+//            dataOutputStream.flush();
             socket.shutdownOutput();
             fis.close();
             System.out.println("Came this far\n");
