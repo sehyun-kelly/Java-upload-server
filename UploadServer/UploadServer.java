@@ -8,6 +8,11 @@ public class UploadServer {
             serverSocket = new ServerSocket(8080);
             Socket clientSocket = serverSocket.accept();
             DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
+            InputStream inputStream = clientSocket.getInputStream();
+            DataInputStream dataInputStream = new DataInputStream(inputStream);
+            String message = dataInputStream.readUTF();
+            System.out.println("Title: "+message);
+
             out.writeBytes("HTTP/1.1 200 OK\r\n");
             out.writeBytes("Content-Type: text/html\r\n\r\n");
             String htmlPage = "<!DOCTYPE html>" +
@@ -24,6 +29,9 @@ public class UploadServer {
                     "</form>" +
                     "</body></html>";
             out.writeBytes(htmlPage);
+
+            clientSocket.close();
+            serverSocket.close();
         } catch (IOException e) {
             System.out.println("Exception caught when trying to listen on port 8080 or listening for a connection");
             System.out.println(e.getMessage());

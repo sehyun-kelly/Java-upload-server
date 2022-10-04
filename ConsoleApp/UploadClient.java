@@ -12,9 +12,11 @@ public class UploadClient {
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(socket.getInputStream()));
             OutputStream out = socket.getOutputStream();
-            FileInputStream fis = new FileInputStream("/Users/nngoc2701/Documents/Term 3/COMP-3940/Assignment II/A2DesignReference/ConsoleApp/AndroidLogo.png");
+            FileInputStream fis = new FileInputStream("./ConsoleApp/AndroidLogo.png");
             byte[] bytes = fis.readAllBytes();
             out.write(bytes);
+            DataOutputStream dataOutputStream = new DataOutputStream(out);
+            dataOutputStream.flush();
             socket.shutdownOutput();
             fis.close();
             System.out.println("Came this far\n");
