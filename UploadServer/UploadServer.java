@@ -5,7 +5,7 @@ public class UploadServer {
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = null;
         try {
-            serverSocket = new ServerSocket(8080);
+            serverSocket = new ServerSocket(7777);
             Socket clientSocket = serverSocket.accept();
             DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
             InputStream inputStream = clientSocket.getInputStream();
