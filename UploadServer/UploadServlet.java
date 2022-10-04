@@ -13,11 +13,11 @@ public class UploadServlet extends HttpServlet {
             }
             Clock clock = Clock.systemDefaultZone();
             long milliSeconds = clock.millis();
-            OutputStream outputStream = new FileOutputStream(new File(String.valueOf(milliSeconds) + ".png"));
+            OutputStream outputStream = new FileOutputStream(System.getProperty("user.dir") + "/images/" + milliSeconds + ".png");
             baos.writeTo(outputStream);
             outputStream.close();
             PrintWriter out = new PrintWriter(response.getOutputStream(), true);
-            File dir = new File(".");
+            File dir = new File(System.getProperty("user.dir") + "/images");
             String[] chld = dir.list();
             for (int i = 0; i < chld.length; i++) {
                 String fileName = chld[i];
