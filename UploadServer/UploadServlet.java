@@ -1,7 +1,12 @@
+import org.w3c.dom.css.CSSStyleRule;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Clock;
+
 
 public class UploadServlet extends HttpServlet {
     @Override
@@ -16,17 +21,56 @@ public class UploadServlet extends HttpServlet {
             }
             Clock clock = Clock.systemDefaultZone();
             long milliSeconds = clock.millis();
-            OutputStream outputStream = new FileOutputStream(System.getProperty("user.dir") + "/images/" + milliSeconds + ".png");
+            Path currentRelativePath = Paths.get("");
+            OutputStream outputStream = new FileOutputStream(currentRelativePath.toAbsolutePath().getParent() + "/images/" + milliSeconds + ".png");
+
             baos.writeTo(outputStream);
             outputStream.close();
             PrintWriter out = new PrintWriter(response.getOutputStream(), true);
-            File dir = new File(System.getProperty("user.dir") + "/images");
-            String[] chld = dir.list();
-            for (int i = 0; i < chld.length; i++) {
-                String fileName = chld[i];
-                out.println(fileName + "\n");
-                System.out.println(fileName);
+            BufferedReader reader;
+            try {
+                reader = new BufferedReader(new FileReader(currentRelativePath.toAbsolutePath().getParent() + "/ConsoleApp/images.txt"));
+                String line = reader.readLine();
+                while (line != null) {
+                    int i, j, k;
+                    System.out.print("{" + '"' + "Path:" + '"');
+                    for (i = 0; i < line.length(); i++) {
+                        if (line.charAt(i) == '&') {
+                            System.out.print('"' + ", " + '"' + "Caption:" + '"' + ':' + '"');
+                            break;
+                        }
+                        System.out.print(line.charAt(i));
+                    }
+                    for (j = i + 1; j < line.length(); j++) {
+                        if (line.charAt(j) == '@') {
+                            System.out.print('"' + ", " + '"' + "Date:" + '"' + ':' + '"');
+                            break;
+                        }
+                        System.out.print(line.charAt(j));
+                    }
+                    for (k = j + 1; k < line.length(); k++) {
+                        if (line.charAt(k) == '*') {
+                            System.out.print('"' + "}" + "\n");
+                            break;
+                        }
+                        System.out.print(line.charAt(k));
+                    }
+
+//                    System.out.println(line);
+                    line = reader.readLine();
+                }
+                reader.close();
+            } catch (IOException e) {
+                System.out.println(e);
             }
+
+//            File dir = new File(currentRelativePath.toAbsolutePath().getParent() + "/images");
+//            String[] chld = dir.list();
+//            for (int i = 0; i < chld.length; i++) {
+//                String fileName = chld[i];
+//                out.println(fileName + "\n");
+//                System.out.println(fileName);
+//            }
         } catch (Exception ex) {
             System.err.println(ex);
         }
