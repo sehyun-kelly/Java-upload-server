@@ -5,6 +5,7 @@ import java.time.Clock;
 public class UploadServerThread extends Thread {
     private Socket socket;
     private int connectionCount;
+
     public UploadServerThread(Socket socket, int count) {
         super("DirServerThread");
         this.socket = socket;
@@ -13,19 +14,20 @@ public class UploadServerThread extends Thread {
 
     public void run() {
         try {
-            if(socket.getLocalAddress().toString().contains("127")){
+            InputStream in = socket.getInputStream();
+            OutputStream out = socket.getOutputStream();
+            HttpServletRequest req = new HttpServletRequest(in);
+            OutputStream baos = new ByteArrayOutputStream();
+            HttpServletResponse res = new HttpServletResponse(baos);
+
+            if (socket.getLocalAddress().toString().contains("127")) {
                 System.out.println("Client " + connectionCount + " from console");
-                InputStream in = socket.getInputStream();
-                OutputStream out = socket.getOutputStream();
-                HttpServletRequest req = new HttpServletRequest(in);
-                OutputStream baos = new ByteArrayOutputStream();
-                HttpServletResponse res = new HttpServletResponse(baos);
+
                 HttpServlet httpServlet = new UploadServlet();
                 httpServlet.doPost(req, res);
                 out.write(((ByteArrayOutputStream) baos).toByteArray());
-            }else{
+            } else {
                 System.out.println("Client " + connectionCount + " from web");
-                OutputStream out = socket.getOutputStream();
                 String htmlPage = "<!DOCTYPE html>" +
                         "<html><head><title>File Upload Form</title></head>" +
                         "<body><h1>Upload file</h1>" +
@@ -51,10 +53,12 @@ public class UploadServerThread extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(socket != null){
+            if (socket != null) {
                 try {
                     socket.close();
-                }catch (IOException e){}
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
             }
         }
     }

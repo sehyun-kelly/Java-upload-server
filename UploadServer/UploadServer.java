@@ -4,7 +4,7 @@ import java.io.*;
 public class UploadServer {
     private static int count;
     private static ServerSocket serverSocket;
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         count = 0;
         System.out.println("starting server");
         try {
