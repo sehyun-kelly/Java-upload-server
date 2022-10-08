@@ -19,4 +19,9 @@ public class WebUploadServlet extends HttpServlet {
             System.out.println(e.getMessage());
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("doPost in WebUploadServlet");
+    }
 }

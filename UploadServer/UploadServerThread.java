@@ -21,7 +21,7 @@ public class UploadServerThread extends Thread {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             HttpServletResponse res = new HttpServletResponse(baos);
 
-            if (socket.getLocalAddress().toString().contains("127")) {
+            if (!req.isFromWeb()) {
                 System.out.println("Client " + connectionCount + " from console");
                 myClass = Class.forName("UploadServlet");
                 HttpServlet httpServlet = (HttpServlet) myClass.getConstructor().newInstance();
@@ -31,7 +31,10 @@ public class UploadServerThread extends Thread {
                 System.out.println("Client " + connectionCount + " from web");
                 myClass = Class.forName("WebUploadServlet");
                 HttpServlet httpServlet = (HttpServlet) myClass.getConstructor().newInstance();
-                httpServlet.doGet(req, res);
+
+                if(req.getMethod().equals("GET")) httpServlet.doGet(req, res);
+                else if(req.getMethod().equals("")) httpServlet.doPost(req, res);
+
                 out.write(res.getResponse().toByteArray());
             }
         } catch (Exception e) {
