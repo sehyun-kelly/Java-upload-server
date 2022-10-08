@@ -32,8 +32,10 @@ public class UploadServerThread extends Thread {
                 myClass = Class.forName("WebUploadServlet");
                 HttpServlet httpServlet = (HttpServlet) myClass.getConstructor().newInstance();
 
-                if(req.getMethod().equals("GET")) httpServlet.doGet(req, res);
-                else if(req.getMethod().equals("")) httpServlet.doPost(req, res);
+                switch (req.getMethod()) {
+                    case "GET" -> httpServlet.doGet(req, res);
+                    case "POST" -> httpServlet.doPost(req, res);
+                }
 
                 out.write(res.getResponse().toByteArray());
             }
