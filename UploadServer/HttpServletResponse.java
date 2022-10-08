@@ -20,7 +20,7 @@ public class HttpServletResponse {
             String response = "HTTP/1.1 200 OK" + CRLF +
                     "Content-Length: " + htmlPage.getBytes().length + CRLF + CRLF
                     + htmlPage + CRLF + CRLF;
-            System.out.println(response);
+//            System.out.println(response);
             outputStream.write(response.getBytes());
         } catch (IOException e) {
             e.printStackTrace();

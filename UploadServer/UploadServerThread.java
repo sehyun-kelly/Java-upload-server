@@ -21,13 +21,13 @@ public class UploadServerThread extends Thread {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             HttpServletResponse res = new HttpServletResponse(baos);
 
-            if (!req.isFromWeb()) {
+            if (req.getConnectionAgent().equals("Console")) {
                 System.out.println("Client " + connectionCount + " from console");
                 myClass = Class.forName("UploadServlet");
                 HttpServlet httpServlet = (HttpServlet) myClass.getConstructor().newInstance();
                 httpServlet.doPost(req, res);
                 out.write(baos.toByteArray());
-            } else {
+            } else if (req.getConnectionAgent().equals("Web")) {
                 System.out.println("Client " + connectionCount + " from web");
                 myClass = Class.forName("WebUploadServlet");
                 HttpServlet httpServlet = (HttpServlet) myClass.getConstructor().newInstance();

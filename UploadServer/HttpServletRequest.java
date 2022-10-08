@@ -1,12 +1,15 @@
 import java.io.*;
+import java.util.ArrayList;
 
 public class HttpServletRequest {
     private InputStream inputStream = null;
     private String method;
-    private int contentLength;
     private String contentType;
     private String userAgent;
-
+    private byte[] fileArray;
+    private String caption;
+    private String date;
+    private ArrayList<String> boundaryData;
 
     public HttpServletRequest(InputStream inputStream) throws IOException {
         this.inputStream = inputStream;
@@ -14,40 +17,99 @@ public class HttpServletRequest {
         while (inputStream.available() != 0) {
             request.append((char) inputStream.read());
         }
-        System.out.println(request);
-        parseRequest(request.toString());
+//        System.out.println(request);
+
+        parseHeader(request.toString());
+        parseBoundary(request.toString());
+        if(boundaryData != null) parseFormData();
     }
 
-    private void parseRequest(String request){
+    private void parseHeader(String request){
         String[] stream = request.split("\n");
-        System.out.println("stream[0]: " + stream[0]);
         if(stream[0].contains("GET")) method = "GET";
         else if(stream[0].contains("POST")) method = "POST";
 
         for(String line : stream){
             String[] parsedLine = line.split(": ");
-//            if(parsedLine[0].equals("Content-Length")) contentLength = Integer.parseInt(parsedLine[1]);
             if(parsedLine[0].equals("User-Agent")) userAgent = parsedLine[1];
             if(parsedLine[0].equals("Content-Type")) contentType = parsedLine[1].split(";")[0];
         }
 
-        System.out.println(method + ", " + contentType + ", " + contentLength + ", " + userAgent);
+    }
+
+    private void parseBoundary(String request){
+        if(this.method != null && this.method.equals("POST")) {
+            String[] stream = request.split("\n");
+            boundaryData = new ArrayList<>();
+            int i = 0;
+
+            while (i < stream.length) {
+                while (!stream[i].contains("------WebKitFormBoundary")) i++;
+                i++;
+                while (i < stream.length && !stream[i].contains("------WebKitFormBoundary")) {
+                    if (!stream[i].equals("")) boundaryData.add(stream[i]);
+                    i++;
+                }
+            }
+        }
+    }
+
+    private void parseFormData(){
+        String fileName = "";
+        String caption = "";
+        String date = "";
+
+        int i = 0;
+
+        while (i < boundaryData.size() && boundaryData.get(i).contains("Content-Disposition")){
+            i++;
+            if(boundaryData.get(i).contains("Content-Type")){
+                i++;
+                while(!boundaryData.get(i).contains("Content-Disposition")) {
+                    fileName += boundaryData.get(i++);
+                }
+            }
+
+            if(boundaryData.get(i).contains("caption")) {
+                i += 2;
+                caption += boundaryData.get(i);
+            }
+
+            if(boundaryData.get(++i).contains("date")) {
+                i += 2;
+                date += boundaryData.get(i);
+            }
+        }
+
+        fileArray = fileName.getBytes();
+        this.caption = caption;
+        this.date = date;
+
+        System.out.println("file byte array: " + fileArray);
+        System.out.println("caption: " + caption);
+        System.out.println("date: " + date);
     }
 
     public InputStream getInputStream() {
         return inputStream;
     }
 
-    public String getMethod() {
-        System.out.println("this method is: " + this.method);
-        return this.method; }
-    public int getContentLength() { return this.contentLength; }
+    public String getMethod() { return this.method; }
+
     public String getContentType() { return this.contentType; }
+
     public String getUserAgent() { return this.userAgent; }
 
-    public boolean isFromWeb(){
-        if(userAgent.contains("Mozilla")) return true;
-        return false;
+    public byte[] getFileArray() { return this.fileArray; }
+
+    public String getCaption() { return this.caption; }
+
+    public String getDate() { return this.date; }
+
+    public String getConnectionAgent(){
+        if(userAgent == null) return "null";
+        if(userAgent.contains("Mozilla")) return "Web";
+        return "Console";
     }
 
 }
