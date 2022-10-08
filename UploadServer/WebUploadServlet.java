@@ -40,5 +40,6 @@ public class WebUploadServlet extends HttpServlet {
                 "       </form>\n" +
                 "   </body>\n" +
                 "</html>";
+        System.out.println("doPost in WebUploadServlet");
     }
 }

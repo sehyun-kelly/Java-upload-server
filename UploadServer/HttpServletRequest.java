@@ -1,9 +1,13 @@
 import java.io.*;
 
 public class HttpServletRequest {
-    private InputStream inputStream;
-    private String requestMethod = null;
-    private String requestPath = null;
+    private InputStream inputStream = null;
+    private String method;
+    private int contentLength;
+    private String contentType;
+    private String userAgent;
+
+
     public HttpServletRequest(InputStream inputStream) throws IOException {
         this.inputStream = inputStream;
         StringBuilder request = new StringBuilder();
@@ -11,32 +15,35 @@ public class HttpServletRequest {
             request.append((char) inputStream.read());
         }
         System.out.println(request);
+        parseRequest(request.toString());
+    }
 
-        parseMethod(request.toString());
+    private void parseRequest(String request){
+        String[] stream = request.split("\n");
+        method = stream[0].split("/")[0].trim();
+
+        for(String line : stream){
+            String[] parsedLine = line.split(": ");
+//            if(parsedLine[0].equals("Content-Length")) contentLength = Integer.parseInt(parsedLine[1]);
+            if(parsedLine[0].equals("User-Agent")) userAgent = parsedLine[1];
+            if(parsedLine[0].equals("Content-Type")) contentType = parsedLine[1].split(";")[0];
+        }
+
+        System.out.println(method + ", " + contentType + ", " + contentLength + ", " + userAgent);
     }
 
     public InputStream getInputStream() {
         return inputStream;
     }
 
-    public void parseMethod(String request) {
-        String[] components = request.split(" ");
-        requestMethod = components[0];
-        if (components.length > 1) {
-            requestPath = components[1];
-        } else {
-            requestPath = "/undefined";
-        }
+    public String getMethod() { return this.method; }
+    public int getContentLength() { return this.contentLength; }
+    public String getContentType() { return this.contentType; }
+    public String getUserAgent() { return this.userAgent; }
+
+    public boolean isFromWeb(){
+        if(userAgent.contains("Mozilla")) return true;
+        return false;
     }
 
-    public String getRequestMethod() {
-        return requestMethod;
-    }
-
-    public boolean checkValidRequest() {
-        if (!requestMethod.equals("GET") && !requestMethod.equals("POST")) {
-            return false;
-        }
-        return !requestPath.equals("/undefined");
-    }
 }
