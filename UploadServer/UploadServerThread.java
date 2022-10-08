@@ -1,10 +1,9 @@
 import java.net.*;
 import java.io.*;
-import java.time.Clock;
 
 public class UploadServerThread extends Thread {
-    private Socket socket;
-    private int connectionCount;
+    private final Socket socket;
+    private final int connectionCount;
 
     public UploadServerThread(Socket socket, int count) {
         super("DirServerThread");
@@ -13,6 +12,8 @@ public class UploadServerThread extends Thread {
     }
 
     public void run() {
+        Class<?> myClass;
+
         try {
             InputStream in = socket.getInputStream();
             OutputStream out = socket.getOutputStream();
@@ -22,15 +23,15 @@ public class UploadServerThread extends Thread {
 
             if (socket.getLocalAddress().toString().contains("127")) {
                 System.out.println("Client " + connectionCount + " from console");
-
-                HttpServlet httpServlet = new UploadServlet();
+                myClass = Class.forName("UploadServlet");
+                HttpServlet httpServlet = (HttpServlet) myClass.getConstructor().newInstance();
                 httpServlet.doPost(req, res);
                 out.write(baos.toByteArray());
             } else {
                 System.out.println("Client " + connectionCount + " from web");
-                HttpServlet httpServlet = new WebUploadServlet();
+                myClass = Class.forName("WebUploadServlet");
+                HttpServlet httpServlet = (HttpServlet) myClass.getConstructor().newInstance();
                 httpServlet.doGet(req, res);
-
                 out.write(res.getResponse().toByteArray());
             }
         } catch (Exception e) {
