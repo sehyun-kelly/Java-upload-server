@@ -20,7 +20,9 @@ public class HttpServletRequest {
 
     private void parseRequest(String request){
         String[] stream = request.split("\n");
-        method = stream[0].split("/")[0].trim();
+        System.out.println("stream[0]: " + stream[0]);
+        if(stream[0].contains("GET")) method = "GET";
+        else if(stream[0].contains("POST")) method = "POST";
 
         for(String line : stream){
             String[] parsedLine = line.split(": ");
@@ -36,7 +38,9 @@ public class HttpServletRequest {
         return inputStream;
     }
 
-    public String getMethod() { return this.method; }
+    public String getMethod() {
+        System.out.println("this method is: " + this.method);
+        return this.method; }
     public int getContentLength() { return this.contentLength; }
     public String getContentType() { return this.contentType; }
     public String getUserAgent() { return this.userAgent; }
