@@ -1,7 +1,9 @@
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Clock;
+import java.util.List;
 
 
 public class UploadServlet extends HttpServlet {
@@ -23,23 +25,23 @@ public class UploadServlet extends HttpServlet {
             baos.writeTo(outputStream);
             outputStream.close();
             PrintWriter out = new PrintWriter(response.getOutputStream(), true);
-            BufferedReader reader;
             try {
-                reader = new BufferedReader(new FileReader(currentRelativePath.toAbsolutePath().getParent() + "/ConsoleApp/images.txt"));
-                String line = reader.readLine();
-                while (line != null) {
+                File file = new File(currentRelativePath.toAbsolutePath().getParent() + "/ConsoleApp/images.txt");
+                List<String> lines = Files.readAllLines(file.toPath());
+                lines.sort(null);
+                for (String line : lines) {
                     int i, j, k;
-                    System.out.print("{" + '"' + "Path:" + '"');
+                    System.out.print("{" + '"' + "Path" + "\":");
                     for (i = 0; i < line.length(); i++) {
                         if (line.charAt(i) == '&') {
-                            System.out.print('"' + ", " + '"' + "Caption:" + '"' + ':' + '"');
+                            System.out.print('"' + ", " + '"' + "Caption" + '"' + ':' + '"');
                             break;
                         }
                         System.out.print(line.charAt(i));
                     }
                     for (j = i + 1; j < line.length(); j++) {
                         if (line.charAt(j) == '@') {
-                            System.out.print('"' + ", " + '"' + "Date:" + '"' + ':' + '"');
+                            System.out.print('"' + ", " + '"' + "Date" + '"' + ':' + '"');
                             break;
                         }
                         System.out.print(line.charAt(j));
@@ -53,22 +55,13 @@ public class UploadServlet extends HttpServlet {
                     }
 
 //                    System.out.println(line);
-                    line = reader.readLine();
                 }
-                reader.close();
             } catch (IOException e) {
-                System.out.println(e);
+                e.printStackTrace();
             }
 
-//            File dir = new File(currentRelativePath.toAbsolutePath().getParent() + "/images");
-//            String[] chld = dir.list();
-//            for (int i = 0; i < chld.length; i++) {
-//                String fileName = chld[i];
-//                out.println(fileName + "\n");
-//                System.out.println(fileName);
-//            }
-        } catch (Exception ex) {
-            System.err.println(ex);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
