@@ -1,6 +1,7 @@
-import java.io.File;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 public class WebUploadServlet extends HttpServlet {
     @Override
@@ -29,6 +30,21 @@ public class WebUploadServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         Path currentRelativePath = Paths.get("");
+        try {
+            String fileName = currentRelativePath.toAbsolutePath().getParent() + "/images/" + request.getFileName();
+            OutputStream outputStream = new FileOutputStream(fileName);
+            outputStream.write(request.getFileArray());
+
+            String describe = fileName + "&" + request.getCaption() + "@" + request.getDate() + "*";
+            FileWriter fw = new FileWriter(currentRelativePath.toAbsolutePath().getParent() + "/ConsoleApp/images.txt", true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(describe);
+            bw.newLine();
+            bw.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         response.htmlPage = "<!DOCTYPE html>\r\n" +
                 "<html>\n" +
                 "   <head>\n" +
@@ -47,12 +63,13 @@ public class WebUploadServlet extends HttpServlet {
 
     private String getListing(String path) {
         File dir = new File(path);
-        String[] chld = dir.list();
+        String[] child = dir.list();
 
-        if (chld == null) return "No files found";
+        if (child == null) return "No files found";
 
+        Arrays.sort(child);
         String dirList = "All images:";
-        for (String s : chld) {
+        for (String s : child) {
             dirList += "<li>" + s + "</li>";
         }
         return dirList;
