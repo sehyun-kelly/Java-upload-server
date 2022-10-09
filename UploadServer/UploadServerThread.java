@@ -1,3 +1,5 @@
+import CustomException.InvalidConnection;
+
 import java.net.*;
 import java.io.*;
 
@@ -28,6 +30,8 @@ public class UploadServerThread extends Thread {
                     HttpServlet httpServlet = (HttpServlet) myClass.getConstructor().newInstance();
                     httpServlet.doPost(req, res);
                     out.write(baos.toByteArray());
+                } else {
+                    throw new InvalidConnection();
                 }
             } else {
                 System.out.println("Client " + connectionCount + " from web");
