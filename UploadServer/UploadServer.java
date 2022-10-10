@@ -1,7 +1,21 @@
 import java.net.*;
 import java.io.*;
+import java.util.logging.FileHandler;
 
 public class UploadServer {
+    public static FileHandler fh;
+    static {
+        try {
+            File f = new File("log.txt");
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+            fh = new FileHandler("log.txt", true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static int count;
     private static ServerSocket serverSocket;
     public static void main(String[] args) {
