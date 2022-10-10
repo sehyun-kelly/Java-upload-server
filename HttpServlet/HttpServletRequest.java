@@ -31,7 +31,7 @@ public class HttpServletRequest {
             request.append(input);
         }
 
-        System.out.println(request);
+//        System.out.println(request);
 
         parseHeader(request.toString());
         parseBoundary(request.toString());
@@ -52,7 +52,7 @@ public class HttpServletRequest {
             wait();
         }
 
-        System.out.println(request);
+//        System.out.println(request);
 
         parseHeader(request.toString());
         parseBoundary(request.toString());

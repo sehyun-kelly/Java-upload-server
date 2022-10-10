@@ -86,9 +86,9 @@ public class UploadClient {
                     writeInFile(myArraylist);
 
                     String name = PATH.split("/")[PATH.split("/").length - 1];
-                    out.write(getRequestHeader(name).getBytes());
+//                    out.write(getRequestHeader(name).getBytes());
                     out.write(bytes);
-                    out.write(getRequestBody(CAPTION, DATE).getBytes());
+//                    out.write(getRequestBody(CAPTION, DATE).getBytes());
                 }
                 socket.shutdownOutput();
                 byte[] content = new byte[1];
