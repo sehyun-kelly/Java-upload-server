@@ -4,6 +4,9 @@ import CustomException.InvalidConnection;
 import HttpServlet.*;
 import java.net.*;
 import java.io.*;
+import java.util.logging.Level;
+
+import static UploadServer.UploadServer.logger;
 
 public class UploadServerThread extends Thread {
     private final Socket socket;
@@ -48,6 +51,7 @@ public class UploadServerThread extends Thread {
                 out.write(res.getResponse().toByteArray());
             }
         } catch (Exception e) {
+            logger.info(e.getMessage());
             e.printStackTrace();
         } finally {
             if (socket != null) {

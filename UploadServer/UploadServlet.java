@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import static UploadServer.UploadServer.logger;
+
 
 public class UploadServlet extends HttpServlet {
     @Override
@@ -61,10 +63,6 @@ public class UploadServlet extends HttpServlet {
             }
 
         } catch (Exception e) {
-            Logger logger = Logger.getLogger(e.getMessage());
-            logger.addHandler(UploadServer.fh);
-            SimpleFormatter formatter = new SimpleFormatter();
-            UploadServer.fh.setFormatter(formatter);
             logger.info(e.getMessage());
             e.printStackTrace();
         }
