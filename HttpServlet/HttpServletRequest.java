@@ -31,9 +31,37 @@ public class HttpServletRequest {
             request.append(input);
         }
 
+        System.out.println(request);
+
         parseHeader(request.toString());
         parseBoundary(request.toString());
         if (boundaryData != null) parseFormData();
+    }
+
+    public ByteArrayOutputStream updateRequest(InputStream in) throws IOException, InterruptedException {
+        StringBuilder request = new StringBuilder();
+        raws.clear();
+        byte[] content = new byte[1];
+        int bytesRead = -1;
+        while ((bytesRead = in.read(content)) != -1) {
+            raws.add(bytesRead);
+            request.append((char) content[0]);
+        }
+
+        while (in.available() != 0) {
+            wait();
+        }
+
+        System.out.println(request);
+
+        parseHeader(request.toString());
+        parseBoundary(request.toString());
+        if (boundaryData != null) parseFormData();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        baos.write(fileArray);
+
+        return baos;
     }
 
     private void parseHeader(String request) {
@@ -58,7 +86,7 @@ public class HttpServletRequest {
             int i = 0;
 
             while (i < stream.length) {
-                while (!stream[i].contains("------WebKitFormBoundary")){
+                while (i < stream.length && !stream[i].contains("------WebKitFormBoundary")){
                     begPos += stream[i].length() + 1;
                     i++;
                 }
