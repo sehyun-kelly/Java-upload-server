@@ -3,8 +3,11 @@ package UploadServer;
 import java.net.*;
 import java.io.*;
 import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class UploadServer {
+    public static Logger logger;
     public static FileHandler fh;
     static {
         try {
@@ -13,6 +16,10 @@ public class UploadServer {
                 f.createNewFile();
             }
             fh = new FileHandler("log.txt", true);
+            logger = Logger.getLogger(UploadServer.class.getName());
+            logger.addHandler(UploadServer.fh);
+            SimpleFormatter formatter = new SimpleFormatter();
+            UploadServer.fh.setFormatter(formatter);
         } catch (IOException e) {
             e.printStackTrace();
         }
