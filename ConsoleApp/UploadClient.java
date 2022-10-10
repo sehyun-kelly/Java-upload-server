@@ -1,4 +1,4 @@
-//import org.json.simple.JSONObject;
+package ConsoleApp;
 
 import java.io.*;
 import java.net.*;
@@ -23,7 +23,7 @@ public class UploadClient {
     private static void writeInFile(ArrayList<String> arrayList) {
         String describe = arrayList.get(0) + "&" + arrayList.get(1) + "@" + arrayList.get(2) + "*";
         Path currentRelativePath = Paths.get("");
-        try (FileWriter fw = new FileWriter(currentRelativePath.toAbsolutePath().getParent() + "/images.txt", true)) {
+        try (FileWriter fw = new FileWriter(currentRelativePath.toAbsolutePath() + "/images.txt", true)) {
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(describe);
             bw.newLine();

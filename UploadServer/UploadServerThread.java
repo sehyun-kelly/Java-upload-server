@@ -1,5 +1,7 @@
-import CustomException.InvalidConnection;
+package UploadServer;
 
+import CustomException.InvalidConnection;
+import HttpServlet.*;
 import java.net.*;
 import java.io.*;
 
@@ -26,7 +28,7 @@ public class UploadServerThread extends Thread {
             if (!req.getConnectionAgent().equals("Web")) {
                 System.out.println("Client " + connectionCount + " from console");
                 if (socket.getLocalAddress().toString().contains("127")) {
-                    myClass = Class.forName("UploadServlet");
+                    myClass = Class.forName("UploadServer.UploadServlet");
                     HttpServlet httpServlet = (HttpServlet) myClass.getConstructor().newInstance();
                     httpServlet.doPost(req, res);
                     out.write(baos.toByteArray());
@@ -35,7 +37,7 @@ public class UploadServerThread extends Thread {
                 }
             } else {
                 System.out.println("Client " + connectionCount + " from web");
-                myClass = Class.forName("WebUploadServlet");
+                myClass = Class.forName("UploadServer.WebUploadServlet");
                 HttpServlet httpServlet = (HttpServlet) myClass.getConstructor().newInstance();
 
                 switch (req.getMethod()) {

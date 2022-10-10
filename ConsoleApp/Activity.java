@@ -1,6 +1,6 @@
+package ConsoleApp;
+
 import java.io.*;
-//import org.json.simple.JSONObject;
-//import  java.util.Map;
 
 public class Activity {
     private String dirName = null;

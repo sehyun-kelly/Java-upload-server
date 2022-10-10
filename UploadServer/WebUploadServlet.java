@@ -1,3 +1,7 @@
+package UploadServer;
+
+import HttpServlet.*;
+
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -5,7 +9,7 @@ import java.util.Arrays;
 
 public class WebUploadServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) {
         try {
             response.htmlPage = "<!DOCTYPE html>\r\n" +
                     "<html>\n" +
@@ -28,15 +32,15 @@ public class WebUploadServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) {
         Path currentRelativePath = Paths.get("");
         try {
-            String fileName = currentRelativePath.toAbsolutePath().getParent() + "/images/" + request.getFileName();
+            String fileName = currentRelativePath.toAbsolutePath() + "/images/" + request.getFileName();
             OutputStream outputStream = new FileOutputStream(fileName);
             outputStream.write(request.getFileArray());
 
             String describe = fileName + "&" + request.getCaption() + "@" + request.getDate() + "*";
-            FileWriter fw = new FileWriter(currentRelativePath.toAbsolutePath().getParent() + "/images.txt", true);
+            FileWriter fw = new FileWriter(currentRelativePath.toAbsolutePath() + "/images.txt", true);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(describe);
             bw.newLine();
@@ -52,8 +56,8 @@ public class WebUploadServlet extends HttpServlet {
                 "   </head>\n" +
                 "   <body>\n" +
                 "       <p>Upload succeeded!</p><br/>\n" +
-                "       <div><ul>" + getListing(currentRelativePath.toAbsolutePath().getParent() + "/images/")
-                + "</ul></div>\n" +
+                "       <div><ul>\n" + getListing(currentRelativePath.toAbsolutePath() + "/images/") +
+                "       </ul></div>\n" +
                 "       <form method=\"GET\" action=\"\">\n" +
                 "           <input type=\"submit\" value=\"back\"/>\n" +
                 "       </form>\n" +

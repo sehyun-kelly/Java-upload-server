@@ -4,5 +4,8 @@ images.txt
 /images/
 /ConsoleApp/*.class
 /UploadServer/*.class
-/UploadServer/log.txt
-/UploadServer/log.txt.lck
+log.txt
+log.txt.lck
+/CustomException/*.class
+/HttpServlet/*.class
+

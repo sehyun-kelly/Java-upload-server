@@ -1,3 +1,7 @@
+package UploadServer;
+
+import HttpServlet.*;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,7 +14,7 @@ import java.util.logging.SimpleFormatter;
 
 public class UploadServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
             InputStream in = request.getInputStream();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -22,13 +26,13 @@ public class UploadServlet extends HttpServlet {
             Clock clock = Clock.systemDefaultZone();
             long milliSeconds = clock.millis();
             Path currentRelativePath = Paths.get("");
-            OutputStream outputStream = new FileOutputStream(currentRelativePath.toAbsolutePath().getParent() + "/images/" + milliSeconds + ".png");
+            OutputStream outputStream = new FileOutputStream(currentRelativePath.toAbsolutePath() + "/images/" + milliSeconds + ".png");
 
             baos.writeTo(outputStream);
             outputStream.close();
             PrintWriter out = new PrintWriter(response.getOutputStream(), true);
             try {
-                File file = new File(currentRelativePath.toAbsolutePath().getParent() + "/images.txt");
+                File file = new File(currentRelativePath.toAbsolutePath() + "/images.txt");
                 List<String> lines = Files.readAllLines(file.toPath());
                 lines.sort(null);
                 for (String line : lines) {
