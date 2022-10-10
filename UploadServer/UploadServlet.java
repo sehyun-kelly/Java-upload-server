@@ -8,8 +8,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Clock;
 import java.util.List;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 import static UploadServer.UploadServer.logger;
 
@@ -63,8 +61,7 @@ public class UploadServlet extends HttpServlet {
                     }
                 }
                 json.append("}\n");
-//                System.out.println(json);
-                response.htmlPage = json.toString();
+                response.stringResponse = json.toString();
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -11,7 +11,7 @@ public class WebUploadServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
         try {
-            response.htmlPage = "<!DOCTYPE html>\r\n" +
+            response.stringResponse = "<!DOCTYPE html>\r\n" +
                     "<html>\n" +
                     "   <head>\n" +
                     "       <title>File Upload Form</title>\n" +
@@ -49,7 +49,7 @@ public class WebUploadServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        response.htmlPage = "<!DOCTYPE html>\r\n" +
+        response.stringResponse = "<!DOCTYPE html>\r\n" +
                 "<html>\n" +
                 "   <head>\n" +
                 "       <title>File Upload Succeed</title>\n" +

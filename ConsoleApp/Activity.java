@@ -1,7 +1,5 @@
 package ConsoleApp;
 
-import java.io.*;
-
 public class Activity {
     public static void main(String[] args) {
         try {

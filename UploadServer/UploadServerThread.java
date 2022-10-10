@@ -4,7 +4,6 @@ import CustomException.InvalidConnection;
 import HttpServlet.*;
 import java.net.*;
 import java.io.*;
-import java.util.logging.Level;
 
 import static UploadServer.UploadServer.logger;
 
