@@ -34,7 +34,7 @@ public class UploadServerThread extends Thread {
                     myClass = Class.forName("UploadServer.UploadServlet");
                     HttpServlet httpServlet = (HttpServlet) myClass.getConstructor().newInstance();
                     httpServlet.doPost(req, res);
-                    out.write(baos.toByteArray());
+                    out.write(res.getResponse().toByteArray());
                 } else {
                     throw new InvalidConnection();
                 }

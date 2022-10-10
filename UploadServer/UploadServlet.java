@@ -31,33 +31,40 @@ public class UploadServlet extends HttpServlet {
                 File file = new File(currentRelativePath.toAbsolutePath() + "/images.txt");
                 List<String> lines = Files.readAllLines(file.toPath());
                 lines.sort(null);
+                StringBuilder json = new StringBuilder();
+                json.append("{\n");
+                int hasNext = 0, end = lines.size();
                 for (String line : lines) {
+                    hasNext++;
                     int i, j, k;
-                    System.out.print("{" + '"' + "Path" + "\":");
+                    json.append("\t{" + '"' + "Path" + "\":\"");
                     for (i = 0; i < line.length(); i++) {
                         if (line.charAt(i) == '&') {
-                            System.out.print('"' + ", " + '"' + "Caption" + '"' + ':' + '"');
+                            json.append('"' + ", " + '"' + "Caption" + '"' + ':' + '"');
                             break;
                         }
-                        System.out.print(line.charAt(i));
+                        json.append(line.charAt(i));
                     }
                     for (j = i + 1; j < line.length(); j++) {
                         if (line.charAt(j) == '@') {
-                            System.out.print('"' + ", " + '"' + "Date" + '"' + ':' + '"');
+                            json.append('"' + ", " + '"' + "Date" + '"' + ':' + '"');
                             break;
                         }
-                        System.out.print(line.charAt(j));
+                        json.append(line.charAt(j));
                     }
                     for (k = j + 1; k < line.length(); k++) {
                         if (line.charAt(k) == '*') {
-                            System.out.print('"' + "}" + "\n");
+                            json.append('"' + "}")
+                                    .append((hasNext == end) ? "" : ",")
+                                    .append("\n");
                             break;
                         }
-                        System.out.print(line.charAt(k));
+                        json.append(line.charAt(k));
                     }
-
-//                    System.out.println(line);
                 }
+                json.append("}\n");
+//                System.out.println(json);
+                response.htmlPage = json.toString();
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -52,7 +52,7 @@ public class UploadClient {
         boolean end = false;
         while (!end) {
             Socket socket = new Socket("localhost", 8080);
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            InputStream in = socket.getInputStream();
             OutputStream out = socket.getOutputStream();
 
             PATH = null;
@@ -91,6 +91,11 @@ public class UploadClient {
                     out.write(getRequestBody(CAPTION, DATE).getBytes());
                 }
                 socket.shutdownOutput();
+                byte[] content = new byte[1];
+                int bytesRead = -1;
+                while ((bytesRead = in.read(content)) != -1) {
+                    System.out.print((char) content[0]);
+                }
                 socket.shutdownInput();
                 fis.close();
                 System.out.println("Successfully updated image " + CAPTION);
