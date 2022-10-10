@@ -18,7 +18,8 @@ public class UploadClient {
     private static String DATE = null;
 
     public String uuid = UUID.randomUUID().toString().replace("-", "").substring(0, 16);
-    public String boundary = "------WebKitFormBoundary" + uuid + "\r\n";
+    public String headerBoundary = "-----WebKitFormBoundary" + uuid + "\r\n";
+    public String bodyBoundary = "------WebKitFormBoundary" + uuid + "\r\n";
 
 
     public UploadClient() {
@@ -118,24 +119,24 @@ public class UploadClient {
 
     private String getRequestHeader(String name) {
         return "POST / HTTP/1.1\r\n" +
-                "Content-Type: multipart/form-data; boundary=" + boundary +
+                "Content-Type: multipart/form-data; boundary=" + headerBoundary +
                 "User-Agent: Console\r\n" +
                 "\r\n" +
-                boundary +
+                bodyBoundary +
                 "Content-Disposition: form-data; name=\"fileName\"; filename=\"" + name + "\"\r\n" +
                 "Content-Type: image/png\r\n" +
                 "\r\n";
     }
 
     private String getRequestBody(String caption, String date) {
-        return "\r\n" + boundary +
+        return "\r\n" + bodyBoundary +
                 "Content-Disposition: form-data; name=\"caption\"\r\n" +
                 "\r\n" + caption +
                 "\r\n" +
-                boundary +
+                bodyBoundary +
                 "Content-Disposition: form-data; name=\"date\"\r\n" +
                 "\r\n" + date +
-                "\r\n" + boundary.trim()+
-                "--\r\n";
+                "\r\n" + bodyBoundary.trim()+
+                "--\r\n\r\n";
     }
 }
