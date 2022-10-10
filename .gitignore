@@ -4,3 +4,5 @@ out
 /images/
 /ConsoleApp/*.class
 /UploadServer/*.class
+/UploadServer/log.txt
+/UploadServer/log.txt.lck
