@@ -36,7 +36,7 @@ public class WebUploadServlet extends HttpServlet {
             outputStream.write(request.getFileArray());
 
             String describe = fileName + "&" + request.getCaption() + "@" + request.getDate() + "*";
-            FileWriter fw = new FileWriter(currentRelativePath.toAbsolutePath().getParent() + "/ConsoleApp/images.txt", true);
+            FileWriter fw = new FileWriter(currentRelativePath.toAbsolutePath().getParent() + "/images.txt", true);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(describe);
             bw.newLine();

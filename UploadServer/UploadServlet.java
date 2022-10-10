@@ -28,7 +28,7 @@ public class UploadServlet extends HttpServlet {
             outputStream.close();
             PrintWriter out = new PrintWriter(response.getOutputStream(), true);
             try {
-                File file = new File(currentRelativePath.toAbsolutePath().getParent() + "/ConsoleApp/images.txt");
+                File file = new File(currentRelativePath.toAbsolutePath().getParent() + "/images.txt");
                 List<String> lines = Files.readAllLines(file.toPath());
                 lines.sort(null);
                 for (String line : lines) {

@@ -1,6 +1,6 @@
 .idea
 out
-/ConsoleApp/images.txt
+images.txt
 /images/
 /ConsoleApp/*.class
 /UploadServer/*.class

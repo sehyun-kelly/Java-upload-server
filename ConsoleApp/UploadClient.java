@@ -22,7 +22,8 @@ public class UploadClient {
 
     private static void writeInFile(ArrayList<String> arrayList) {
         String describe = arrayList.get(0) + "&" + arrayList.get(1) + "@" + arrayList.get(2) + "*";
-        try (FileWriter fw = new FileWriter("images.txt", true)) {
+        Path currentRelativePath = Paths.get("");
+        try (FileWriter fw = new FileWriter(currentRelativePath.toAbsolutePath().getParent() + "/images.txt", true)) {
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(describe);
             bw.newLine();
@@ -47,39 +48,42 @@ public class UploadClient {
     public String uploadFile() {
         boolean end = false;
         while (!end) {
-            boolean check = true;
             try {
                 PATH = null;
                 CAPTION = null;
                 DATE = null;
+
                 Socket socket = new Socket("localhost", 8080);
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(socket.getInputStream()));
                 OutputStream out = socket.getOutputStream();
 
                 //Here
-                Scanner myObj = new Scanner(System.in);
+                Scanner scanner = new Scanner(System.in);
                 System.out.println("Upload image direction: ");
-                PATH = myObj.nextLine();
-                boolean checkCaption = true;
-                while (checkCaption) {
-                    Scanner myObj2 = new Scanner(System.in);
-                    System.out.println("Caption: ");
-                    CAPTION = myObj2.nextLine();
-                    if (CAPTION.length() > 0) {
-                        checkCaption = false;
-                    } else {
-                        System.out.println("Caption can not be empty");
-                    }
-                }
-                Scanner myObj3 = new Scanner(System.in);
+                PATH = scanner.nextLine();
+                System.out.println("Caption: ");
+                CAPTION = scanner.nextLine();
                 System.out.println("Date: ");
-                DATE = myObj3.nextLine();
+                DATE = scanner.nextLine();
 //                System.out.println("Path: " + PATH + ", Caption: " + CAPTION + ", Date: " + DATE);
+
                 FileInputStream fis = new FileInputStream(PATH);
                 byte[] bytes = fis.readAllBytes();
                 if (isPathValid(PATH)) {
                     out.write(bytes);
+
+                    ArrayList<String> myArraylist = new ArrayList<>();
+                    myArraylist.add(PATH);
+                    myArraylist.add(CAPTION);
+                    if (DATE.length() < 1) {
+                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+                        LocalDateTime now = LocalDateTime.now();
+                        myArraylist.add(dtf.format(now));
+                    } else {
+                        myArraylist.add(DATE);
+                    }
+                    writeInFile(myArraylist);
                 }
                 socket.shutdownOutput();
                 fis.close();
@@ -88,22 +92,8 @@ public class UploadClient {
 
             } catch (Exception e) {
                 System.out.println("ERROR");
-                System.err.println(e);
-                check = false;
+                System.err.println(e.getMessage());
 
-            }
-            if (check) {
-                ArrayList<String> myArraylist = new ArrayList<>();
-                myArraylist.add(PATH);
-                myArraylist.add(CAPTION);
-                if (DATE.length() < 1) {
-                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-                    LocalDateTime now = LocalDateTime.now();
-                    myArraylist.add(dtf.format(now));
-                } else {
-                    myArraylist.add(DATE);
-                }
-                writeInFile(myArraylist);
             }
 
             Scanner answer = new Scanner(System.in);
@@ -117,24 +107,3 @@ public class UploadClient {
         return "Shut down the terminal";
     }
 }
-
-
-//                JSONObject imageInfo = new JSONObject();
-//                imageInfo.put("Path", path);
-//                imageInfo.put("Caption", caption);
-//                imageInfo.put("Date", date);
-//
-//                JSONObject imageObject = new JSONObject();
-//                imageObject.put(caption, imageInfo);
-//
-//                String pathJson = "image.json";
-//
-//                try (PrintWriter file = new PrintWriter(new FileWriter(pathJson))) {
-//                    System.out.println(file);
-//                    //We can write any JSONArray or JSONObject instance to the file
-//                    file.write(imageObject.toJSONString());
-//                    file.flush();
-//
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
