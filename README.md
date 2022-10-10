@@ -29,3 +29,25 @@ Members: Chengyang Li, Sehyun Park, Alex Pu, Melanie Ta, Shen Yen
     └── UploadServer            # Server
 
 - Server log message can be found in log.txt
+
+### Contribution
+- Chengyang Li
+  - Develop user input for Console App
+  - JSON parsing for Console app
+  - Write images data from Console app to Server
+- Sehyun Park
+  - Parse HTTP Request for Console App
+  - Parse HTTP Request for Web
+  - Manage multi-threading flow in UploadServerThread
+- Alex Pu:
+  - Custom exceptions
+  - Manage Exceptions and Logs
+  - Video
+- Melanie Ta
+  - Manage code structure
+  - Construct request for Console App
+  - Construct server's response
+- Shen Yen
+  - Develop user input for Console App
+  - Write images data from Console app to Server
+  - Video
