@@ -19,13 +19,7 @@ public class UploadServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
             InputStream in = request.getInputStream();
-//            ByteArrayOutputStream baos = request.updateRequest(in);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            byte[] content = new byte[1];
-            int bytesRead = -1;
-            while ((bytesRead = in.read(content)) != -1) {
-                baos.write(content, 0, bytesRead);
-            }
+            ByteArrayOutputStream baos = request.updateRequest(in);
             Clock clock = Clock.systemDefaultZone();
             long milliSeconds = clock.millis();
             Path currentRelativePath = Paths.get("");
