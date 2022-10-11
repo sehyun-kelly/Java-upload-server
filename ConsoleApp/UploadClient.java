@@ -87,6 +87,7 @@ public class UploadClient {
                     ArrayList<String> myArraylist = new ArrayList<>();
                     myArraylist.add(PATH);
                     myArraylist.add(CAPTION);
+                    myArraylist.add(DATE);
                     writeInFile(myArraylist);
                 }
                 socket.shutdownOutput();
@@ -102,7 +103,7 @@ public class UploadClient {
             } catch (Exception e) {
                 System.out.println("ERROR");
                 System.err.println(e.getMessage());
-
+                e.printStackTrace();
             }
 
             System.out.println("\r\nDo you want to upload more image?(Y/N) ");
