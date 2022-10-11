@@ -73,23 +73,21 @@ public class UploadClient {
                 FileInputStream fis = new FileInputStream(PATH);
                 byte[] bytes = fis.readAllBytes();
                 if (isPathValid(PATH)) {
-                    ArrayList<String> myArraylist = new ArrayList<>();
-                    myArraylist.add(PATH);
-                    myArraylist.add(CAPTION);
                     if (DATE.length() < 1) {
                         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
                         LocalDate now = LocalDate.now();
                         DATE = String.valueOf(now);
-                        myArraylist.add(dtf.format(now));
-                    } else {
-                        myArraylist.add(DATE);
                     }
-                    writeInFile(myArraylist);
 
                     String name = PATH.split("/")[PATH.split("/").length - 1];
                     out.write(getRequestHeader(name).getBytes());
                     out.write(bytes);
                     out.write(getRequestBody(CAPTION, DATE).getBytes());
+
+                    ArrayList<String> myArraylist = new ArrayList<>();
+                    myArraylist.add(PATH);
+                    myArraylist.add(CAPTION);
+                    writeInFile(myArraylist);
                 }
                 socket.shutdownOutput();
                 byte[] content = new byte[1];

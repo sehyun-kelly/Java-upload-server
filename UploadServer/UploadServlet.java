@@ -6,7 +6,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Clock;
 import java.util.List;
 
 import static UploadServer.UploadServer.logger;
@@ -18,10 +17,8 @@ public class UploadServlet extends HttpServlet {
         try {
             InputStream in = request.getInputStream();
             ByteArrayOutputStream baos = request.updateRequest(in);
-            Clock clock = Clock.systemDefaultZone();
-            long milliSeconds = clock.millis();
             Path currentRelativePath = Paths.get("");
-            OutputStream outputStream = new FileOutputStream(currentRelativePath.toAbsolutePath() + "/images/" + milliSeconds + ".png");
+            OutputStream outputStream = new FileOutputStream(currentRelativePath.toAbsolutePath() + "/images/" + request.getFileName());
             baos.writeTo(outputStream);
             outputStream.close();
             PrintWriter out = new PrintWriter(response.getOutputStream(), true);
