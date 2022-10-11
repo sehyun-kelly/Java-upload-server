@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
+import static UploadServer.UploadServer.logger;
+
 public class WebUploadServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -47,6 +49,7 @@ public class WebUploadServlet extends HttpServlet {
             bw.close();
 
         } catch (Exception e) {
+            logger.info(e.getMessage());
             e.printStackTrace();
         }
         response.stringResponse = "<!DOCTYPE html>\r\n" +
