@@ -31,8 +31,6 @@ public class HttpServletRequest {
             request.append(input);
         }
 
-//        System.out.println(request);
-
         parseHeader(request.toString());
         parseBoundary(request.toString());
         if (boundaryData != null) parseFormData();
@@ -44,15 +42,13 @@ public class HttpServletRequest {
         byte[] content = new byte[1];
         int bytesRead = -1;
         while ((bytesRead = in.read(content)) != -1) {
-            raws.add(bytesRead);
+            raws.add((int) content[0]);
             request.append((char) content[0]);
         }
 
         while (in.available() != 0) {
             wait();
         }
-
-//        System.out.println(request);
 
         parseHeader(request.toString());
         parseBoundary(request.toString());
