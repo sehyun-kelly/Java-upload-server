@@ -31,8 +31,7 @@ public class UploadServer {
         count = 0;
         System.out.println("starting server");
         try {
-            serverSocket = new ServerSocket(8080);
-
+            serverSocket = new ServerSocket(8080, 50, InetAddress.getByName("IP ADDRESS HERE"));
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 UploadServerThread uploadServerThread = new UploadServerThread(clientSocket, count);

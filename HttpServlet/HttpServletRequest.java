@@ -30,7 +30,7 @@ public class HttpServletRequest {
             char input = (char) temp;
             request.append(input);
         }
-
+        System.out.println(request);
         parseHeader(request.toString());
         parseBoundary(request.toString());
         if (boundaryData != null) parseFormData();

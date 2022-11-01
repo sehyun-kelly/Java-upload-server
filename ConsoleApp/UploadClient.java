@@ -52,7 +52,7 @@ public class UploadClient {
     public String uploadFile() throws IOException {
         boolean end = false;
         while (!end) {
-            Socket socket = new Socket("localhost", 8080);
+            Socket socket = new Socket(InetAddress.getByName("IP ADDRESS HERE"), 8080);
             InputStream in = socket.getInputStream();
             OutputStream out = socket.getOutputStream();
 
@@ -90,12 +90,12 @@ public class UploadClient {
                     myArraylist.add(DATE);
                     writeInFile(myArraylist);
                 }
-                socket.shutdownOutput();
                 byte[] content = new byte[1];
                 int bytesRead = -1;
                 while ((bytesRead = in.read(content)) != -1) {
                     System.out.print((char) content[0]);
                 }
+                socket.shutdownOutput();
                 socket.shutdownInput();
                 fis.close();
                 System.out.println("Successfully updated image " + CAPTION);
