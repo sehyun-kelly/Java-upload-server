@@ -29,7 +29,7 @@ public class UploadServerThread extends Thread {
 
             if (!req.getConnectionAgent().equals("Web")) {
                 System.out.println("Client " + connectionCount + " from console");
-                if (socket.getLocalAddress().toString().contains("127")) {
+                if (socket.getLocalAddress().toString().contains("192")) { // IP
                     myClass = Class.forName("UploadServer.UploadServlet");
                     HttpServlet httpServlet = (HttpServlet) myClass.getConstructor().newInstance();
                     httpServlet.doPost(req, res);
