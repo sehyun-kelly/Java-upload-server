@@ -7,7 +7,8 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 public class UploadServer {
-    private static String IP_ADDRESS = "HERE";
+    public static String IP_ADDRESS = "HERE";
+    public static String IP_PART = ".";
     public static Logger logger;
     public static FileHandler fh;
     static {
@@ -42,6 +43,7 @@ public class UploadServer {
         } catch (IOException e) {
             System.out.println("Exception caught when trying to listen on port 8080 or listening for a connection");
             System.out.println(e.getMessage());
+            e.printStackTrace();
             System.exit(-1);
         }
 

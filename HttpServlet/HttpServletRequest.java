@@ -50,6 +50,8 @@ public class HttpServletRequest {
             wait();
         }
 
+        System.out.println(request);
+
         parseHeader(request.toString());
         parseBoundary(request.toString());
         if (boundaryData != null) parseFormData();

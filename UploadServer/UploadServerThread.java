@@ -21,6 +21,7 @@ public class UploadServerThread extends Thread {
         Class<?> myClass;
 
         try {
+            System.out.println("Client " + connectionCount);
             InputStream in = socket.getInputStream();
             OutputStream out = socket.getOutputStream();
             HttpServletRequest req = new HttpServletRequest(in);
@@ -28,8 +29,8 @@ public class UploadServerThread extends Thread {
             HttpServletResponse res = new HttpServletResponse(baos);
 
             if (!req.getConnectionAgent().equals("Web")) {
-                System.out.println("Client " + connectionCount + " from console");
-                if (socket.getLocalAddress().toString().contains("192")) { // IP
+                System.out.println("Console connection");
+                if (socket.getLocalAddress().toString().contains(UploadServer.IP_PART)) { // IP
                     myClass = Class.forName("UploadServer.UploadServlet");
                     HttpServlet httpServlet = (HttpServlet) myClass.getConstructor().newInstance();
                     httpServlet.doPost(req, res);
@@ -38,7 +39,7 @@ public class UploadServerThread extends Thread {
                     throw new InvalidConnection();
                 }
             } else {
-                System.out.println("Client " + connectionCount + " from web");
+                System.out.println("Web connection");
                 myClass = Class.forName("UploadServer.WebUploadServlet");
                 HttpServlet httpServlet = (HttpServlet) myClass.getConstructor().newInstance();
 
