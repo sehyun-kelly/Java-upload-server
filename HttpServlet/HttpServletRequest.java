@@ -46,11 +46,11 @@ public class HttpServletRequest {
             request.append((char) content[0]);
         }
 
-        while (in.available() != 0) {
-            wait();
-        }
-
         System.out.println(request);
+//
+//        while (in.available() != 0) {
+//            wait();
+//        }
 
         parseHeader(request.toString());
         parseBoundary(request.toString());
@@ -105,12 +105,14 @@ public class HttpServletRequest {
 
     private void parseFileArray(String[] stream, ArrayList<Integer> lineIndex){
         for(int k = 0; k < 4; k++){
+            if (lineIndex.get(0) + k < stream.length)
             begPos += stream[lineIndex.get(0) + k].length() + 1;
         }
 
         int endPos = begPos;
+        if (lineIndex.size() > 1)
         for(int index = lineIndex.get(0); index < lineIndex.get(1); index++){
-            endPos += stream[index].length() + 1;
+            if (index < stream.length) endPos += stream[index].length() + 1;
         }
 
         fileArray = new byte[endPos - begPos];
@@ -131,12 +133,12 @@ public class HttpServletRequest {
         while (i < boundaryData.size() && boundaryData.get(i).contains("Content-Disposition")) {
             fileName = boundaryData.get(i).split("\"")[boundaryData.get(i++).split("\"").length - 2];
             if (boundaryData.get(i++).contains("Content-Type")) {
-                while (!boundaryData.get(i).contains("Content-Disposition")) {
+                while (i < boundaryData.size() && !boundaryData.get(i).contains("Content-Disposition")) {
                     i++;
                 }
             }
 
-            if (boundaryData.get(i).contains("caption")) {
+            if (i < boundaryData.size() && boundaryData.get(i).contains("caption")) {
                 i += 2;
                 caption.append(boundaryData.get(i));
             }

@@ -2,6 +2,7 @@ package UploadServer;
 
 import CustomException.InvalidConnection;
 import HttpServlet.*;
+
 import java.net.*;
 import java.io.*;
 
@@ -43,12 +44,14 @@ public class UploadServerThread extends Thread {
                 myClass = Class.forName("UploadServer.WebUploadServlet");
                 HttpServlet httpServlet = (HttpServlet) myClass.getConstructor().newInstance();
 
-                switch (req.getMethod()) {
-                    case "GET" -> httpServlet.doGet(req, res);
-                    case "POST" -> httpServlet.doPost(req, res);
-                }
+                if (req.getMethod() != null) {
+                    switch (req.getMethod()) {
+                        case "GET" -> httpServlet.doGet(req, res);
+                        case "POST" -> httpServlet.doPost(req, res);
+                    }
 
-                out.write(res.getResponse().toByteArray());
+                    out.write(res.getResponse().toByteArray());
+                }
             }
         } catch (Exception e) {
             logger.info(e.getMessage());

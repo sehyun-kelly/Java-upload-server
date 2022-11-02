@@ -79,7 +79,8 @@ public class UploadClient {
                         DATE = String.valueOf(now);
                     }
 
-                    String name = PATH.split("/")[PATH.split("/").length - 1];
+//                    String name = PATH.split("/")[PATH.split("/").length - 1];
+                    String name = "ConsoleApp.png";
                     out.write(getRequestHeader(name).getBytes());
                     out.write(bytes);
                     out.write(getRequestBody(CAPTION, DATE).getBytes());
