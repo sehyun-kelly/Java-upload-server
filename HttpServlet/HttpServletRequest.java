@@ -143,7 +143,8 @@ public class HttpServletRequest {
                 caption.append(boundaryData.get(i));
             }
 
-            if (boundaryData.get(++i).contains("date")) {
+            ++i;
+            if (i < boundaryData.size() && boundaryData.get(i).contains("date")) {
                 i += 2;
                 date.append(boundaryData.get(i));
             }
