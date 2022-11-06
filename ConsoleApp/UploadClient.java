@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.UUID;
 
-public class UploadClient {
+import static UploadServer.UploadServer.logger;
 
+public class UploadClient {
+    private static String IP_ADDRESS = "HERE";
     private static String PATH = null;
     private static String CAPTION = null;
     private static String DATE = null;
@@ -52,7 +54,7 @@ public class UploadClient {
     public String uploadFile() throws IOException {
         boolean end = false;
         while (!end) {
-            Socket socket = new Socket("localhost", 8080);
+            Socket socket = new Socket(InetAddress.getByName(IP_ADDRESS), 8888);
             InputStream in = socket.getInputStream();
             OutputStream out = socket.getOutputStream();
 
@@ -80,6 +82,7 @@ public class UploadClient {
                     }
 
                     String name = PATH.split("/")[PATH.split("/").length - 1];
+                    name = name.split("\\\\")[PATH.split("\\\\").length - 1];
                     out.write(getRequestHeader(name).getBytes());
                     out.write(bytes);
                     out.write(getRequestBody(CAPTION, DATE).getBytes());

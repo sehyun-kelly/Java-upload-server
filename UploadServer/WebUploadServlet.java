@@ -37,17 +37,9 @@ public class WebUploadServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
         Path currentRelativePath = Paths.get("");
         try {
-            String fileName = currentRelativePath.toAbsolutePath() + "/images/" + request.getFileName();
-            OutputStream outputStream = new FileOutputStream(fileName);
+            String fileName = request.getCaption() + "_" + request.getDate() + "_" + request.getFileName();
+            OutputStream outputStream = new FileOutputStream(currentRelativePath.toAbsolutePath() + "/images/" + fileName);
             outputStream.write(request.getFileArray());
-
-            String describe = fileName + "&" + request.getCaption() + "@" + request.getDate() + "*";
-            FileWriter fw = new FileWriter(currentRelativePath.toAbsolutePath() + "/images.txt", true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(describe);
-            bw.newLine();
-            bw.close();
-
         } catch (Exception e) {
             logger.info(e.getMessage());
             e.printStackTrace();

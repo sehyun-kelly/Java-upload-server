@@ -2,6 +2,8 @@ package HttpServlet;
 
 import java.io.*;
 
+import static UploadServer.UploadServer.logger;
+
 public class HttpServletResponse {
     private ByteArrayOutputStream outputStream;
 
@@ -25,6 +27,7 @@ public class HttpServletResponse {
 //            System.out.println(response);
             outputStream.write(response.getBytes());
         } catch (IOException e) {
+            logger.info(e.getMessage());
             e.printStackTrace();
         }
         return outputStream;

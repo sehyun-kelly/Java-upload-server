@@ -2,6 +2,7 @@ package UploadServer;
 
 import CustomException.InvalidConnection;
 import HttpServlet.*;
+
 import java.net.*;
 import java.io.*;
 
@@ -21,6 +22,7 @@ public class UploadServerThread extends Thread {
         Class<?> myClass;
 
         try {
+            System.out.println("Client " + connectionCount);
             InputStream in = socket.getInputStream();
             OutputStream out = socket.getOutputStream();
             HttpServletRequest req = new HttpServletRequest(in);
@@ -28,8 +30,8 @@ public class UploadServerThread extends Thread {
             HttpServletResponse res = new HttpServletResponse(baos);
 
             if (!req.getConnectionAgent().equals("Web")) {
-                System.out.println("Client " + connectionCount + " from console");
-                if (socket.getLocalAddress().toString().contains("127")) {
+                System.out.println("Console connection");
+                if (socket.getLocalAddress().toString().contains(UploadServer.IP_PART)) { // IP
                     myClass = Class.forName("UploadServer.UploadServlet");
                     HttpServlet httpServlet = (HttpServlet) myClass.getConstructor().newInstance();
                     httpServlet.doPost(req, res);
@@ -38,16 +40,18 @@ public class UploadServerThread extends Thread {
                     throw new InvalidConnection();
                 }
             } else {
-                System.out.println("Client " + connectionCount + " from web");
+                System.out.println("Web connection");
                 myClass = Class.forName("UploadServer.WebUploadServlet");
                 HttpServlet httpServlet = (HttpServlet) myClass.getConstructor().newInstance();
 
-                switch (req.getMethod()) {
-                    case "GET" -> httpServlet.doGet(req, res);
-                    case "POST" -> httpServlet.doPost(req, res);
-                }
+                if (req.getMethod() != null) {
+                    switch (req.getMethod()) {
+                        case "GET" -> httpServlet.doGet(req, res);
+                        case "POST" -> httpServlet.doPost(req, res);
+                    }
 
-                out.write(res.getResponse().toByteArray());
+                    out.write(res.getResponse().toByteArray());
+                }
             }
         } catch (Exception e) {
             logger.info(e.getMessage());
@@ -57,6 +61,7 @@ public class UploadServerThread extends Thread {
                 try {
                     socket.close();
                 } catch (IOException e) {
+                    logger.info(e.getMessage());
                     System.out.println(e.getMessage());
                 }
             }
