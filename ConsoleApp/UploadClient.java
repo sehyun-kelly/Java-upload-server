@@ -27,21 +27,6 @@ public class UploadClient {
     public UploadClient() {
     }
 
-    private static void writeInFile(ArrayList<String> arrayList) {
-        String describe = arrayList.get(0) + "&" + arrayList.get(1) + "@" + arrayList.get(2) + "*";
-        Path currentRelativePath = Paths.get("");
-        try (FileWriter fw = new FileWriter(currentRelativePath.toAbsolutePath() + "/images.txt", true)) {
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(describe);
-            bw.newLine();
-            bw.close();
-//            System.out.println(describe);
-
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
     private static boolean isPathValid(String path) {
         try {
             Paths.get(path);
@@ -91,7 +76,6 @@ public class UploadClient {
                     myArraylist.add(PATH);
                     myArraylist.add(CAPTION);
                     myArraylist.add(DATE);
-                    writeInFile(myArraylist);
                 }
                 socket.shutdownOutput();
                 byte[] content = new byte[1];
