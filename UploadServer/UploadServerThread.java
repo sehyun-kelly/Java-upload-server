@@ -61,6 +61,7 @@ public class UploadServerThread extends Thread {
                 try {
                     socket.close();
                 } catch (IOException e) {
+                    logger.info(e.getMessage());
                     System.out.println(e.getMessage());
                 }
             }

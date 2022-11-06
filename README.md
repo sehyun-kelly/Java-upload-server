@@ -18,7 +18,7 @@ Members: Chengyang Li, Sehyun Park, Alex Pu, Melanie Ta, Shen Yen
 
 
 ### Description
-- Launch a upload form in http://localhost:8080/. Through the web form, users can upload their images of choice. Upon submission, the server will display a list of images in the html page.
+- Launch a upload form in http://localhost:8888/. Through the web form, users can upload their images of choice. Upon submission, the server will display a list of images in the html page.
 - Users can also connect to the server using ConsoleApp. Upon sending an image, the server will return a JSON string of all the current images.
 
 ### Project structure

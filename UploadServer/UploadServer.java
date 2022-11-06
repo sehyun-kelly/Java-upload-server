@@ -41,7 +41,7 @@ public class UploadServer {
             }
         } catch (IOException e) {
             System.out.println("Exception caught when trying to listen on port 8888 or listening for a connection");
-            System.out.println(e.getMessage());
+            logger.info(e.getMessage());
             e.printStackTrace();
             System.exit(-1);
         }

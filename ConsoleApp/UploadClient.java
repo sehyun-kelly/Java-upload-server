@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.UUID;
 
+import static UploadServer.UploadServer.logger;
+
 public class UploadClient {
     private static String IP_ADDRESS = "HERE";
     private static String PATH = null;

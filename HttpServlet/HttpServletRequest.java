@@ -146,6 +146,7 @@ public class HttpServletRequest {
 
         this.caption = caption.toString().trim();
         this.date = date.toString().trim();
+        if (this.date == "")
 
         System.out.println("file name: " + fileName);
         System.out.println("caption: " + caption);
