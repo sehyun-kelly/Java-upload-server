@@ -52,7 +52,7 @@ public class UploadClient {
     public String uploadFile() throws IOException {
         boolean end = false;
         while (!end) {
-            Socket socket = new Socket(InetAddress.getByName(IP_ADDRESS), 8080);
+            Socket socket = new Socket(InetAddress.getByName(IP_ADDRESS), 8888);
             InputStream in = socket.getInputStream();
             OutputStream out = socket.getOutputStream();
 
@@ -79,8 +79,8 @@ public class UploadClient {
                         DATE = String.valueOf(now);
                     }
 
-//                    String name = PATH.split("/")[PATH.split("/").length - 1];
-                    String name = "ConsoleApp.png";
+                    String name = PATH.split("/")[PATH.split("/").length - 1];
+                    name = name.split("\\\\")[PATH.split("\\\\").length - 1];
                     out.write(getRequestHeader(name).getBytes());
                     out.write(bytes);
                     out.write(getRequestBody(CAPTION, DATE).getBytes());

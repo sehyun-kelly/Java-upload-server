@@ -30,7 +30,7 @@ public class HttpServletRequest {
             char input = (char) temp;
             request.append(input);
         }
-        System.out.println(request);
+
         parseHeader(request.toString());
         parseBoundary(request.toString());
         if (boundaryData != null) parseFormData();
@@ -45,12 +45,6 @@ public class HttpServletRequest {
             raws.add((int) content[0]);
             request.append((char) content[0]);
         }
-
-        System.out.println(request);
-//
-//        while (in.available() != 0) {
-//            wait();
-//        }
 
         parseHeader(request.toString());
         parseBoundary(request.toString());
@@ -182,15 +176,15 @@ public class HttpServletRequest {
     }
 
     public String getFileName() {
-        return this.fileName;
+        return this.fileName.replace("_", "-");
     }
 
     public String getCaption() {
-        return this.caption;
+        return this.caption.replace(" ", "-");
     }
 
     public String getDate() {
-        return this.date;
+        return this.date.replace("\\", "-").replace("/", "-");
     }
 
     public String getConnectionAgent() {
