@@ -7,7 +7,8 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 public class UploadServer {
-    public static String IP_PART = "192.168";
+    public static String IP_ADDRESS = "HERE";
+    public static String IP_PART = "172.";
     public static Logger logger;
     public static FileHandler fh;
     static {
@@ -32,7 +33,7 @@ public class UploadServer {
         count = 0;
         System.out.println("starting server");
         try {
-            serverSocket = new ServerSocket(8888);
+            serverSocket = new ServerSocket(8888, 50, InetAddress.getByName(IP_ADDRESS));
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 UploadServerThread uploadServerThread = new UploadServerThread(clientSocket, count);
