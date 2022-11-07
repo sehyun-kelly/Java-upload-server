@@ -14,7 +14,7 @@ import java.util.UUID;
 import static UploadServer.UploadServer.logger;
 
 public class UploadClient {
-    private static String IP_ADDRESS = "HERE";
+    private static String IP_ADDRESS = "192.168.10.247";
     private static String PATH = null;
     private static String CAPTION = null;
     private static String DATE = null;
@@ -105,6 +105,7 @@ public class UploadClient {
 
     private String getRequestHeader(String name) {
         return "POST / HTTP/1.1\r\n" +
+                "Host: console\r\n" +
                 "Content-Type: multipart/form-data; boundary=" + headerBoundary +
                 "User-Agent: Console\r\n" +
                 "\r\n" +

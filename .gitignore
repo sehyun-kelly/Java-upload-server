@@ -8,3 +8,5 @@ log.txt.lck
 /CustomException/*.class
 /HttpServlet/*.class
 
+/images.txt
+/ConsoleApp/images.txt
