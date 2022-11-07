@@ -30,9 +30,11 @@ public class UploadServlet extends HttpServlet {
                 Arrays.sort(child);
                 for (String s : child) {
                     String[] content = s.split("_");
-                    json.append("\t{\"Path\": \"").append(content[2]).append("\", ");
-                    json.append("\"Caption\": \"").append(content[0]).append("\", ");
-                    json.append("\"Date\": \"").append(content[1]).append("\"},\n");
+                    if (content.length >= 3) {
+                        json.append("\t{\"Path\": \"").append(content[2]).append("\", ");
+                        json.append("\"Caption\": \"").append(content[0]).append("\", ");
+                        json.append("\"Date\": \"").append(content[1]).append("\"},\n");
+                    }
                 }
             }
             json.append("}\n");
